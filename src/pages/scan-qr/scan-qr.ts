@@ -1,23 +1,34 @@
 import { Component } from '@angular/core';
-import {ModalController, NavController, ToastController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
 import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
+import {Subscriber} from "rxjs/Subscriber";
 
+/**
+ * Generated class for the ScanQrPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+
+@IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-scan-qr',
+  templateUrl: 'scan-qr.html',
 })
-export class HomePage {
-  private scanSub: any ;
-  constructor(public navCtrl: NavController,
-              private qrScanner: QRScanner,
-              private modalController: ModalController,
-              private toastCtrl: ToastController) {
+export class ScanQrPage {
+  private isBackMode: boolean = true;
+  private isFlashLightOn: boolean = false;
+  private scanSub: any;
 
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public viewController: ViewController,
+              public qrScanner: QRScanner,
+              public toastCtrl: ToastController) {
   }
 
 
   ionViewWillEnter(){
-
     this.showCamera();
     // Optionally request the permission early
     this.qrScanner.prepare()
@@ -27,10 +38,7 @@ export class HomePage {
           console.log('Camera Permission Given');
 
           // start scanning
-           this.scanSub = this.qrScanner.scan().subscribe((text: string) => {
-            console.log('Scanned something', text);
-           // this.qrScanner.hide(); // hide camera preview
-           // scanSub.unsubscribe(); // stop scanning
+          this.scanSub = this.qrScanner.scan().subscribe((text: string) => {
             this.presentToast(text);
           });
 
@@ -52,12 +60,39 @@ export class HomePage {
       .catch((e: any) => console.log('Error is', e));
   }
 
-
-  scanOnclick() {
-    let modal = this.modalController.create('ScanQrPage');
-    modal.present();
+  closeModal() {
+    this.viewController.dismiss();
   }
 
+
+  toggleFlashLight(){
+
+    /** Default isFlashLightOn is false ,
+     * enable it if false **/
+
+    this.isFlashLightOn = !this.isFlashLightOn;
+    if(this.isFlashLightOn){
+      this.qrScanner.enableLight();
+    }
+    else{
+      this.qrScanner.disableLight();
+    }
+
+  }
+  toggleCamera(){
+    /** Toggle Camera , Default is isBackMode is true , toggle
+     * to false to enable front camera and vice versa.
+     *
+     * @type {boolean}
+     */
+    this.isBackMode =  !this.isBackMode;
+    if(this.isBackMode){
+      this.qrScanner.useFrontCamera();
+    }
+    else{
+      this.qrScanner.useBackCamera();
+    }
+  }
 
   presentToast(text:string) {
     let toast = this.toastCtrl.create({
@@ -73,12 +108,12 @@ export class HomePage {
     toast.present();
   }
 
+
   ionViewWillLeave(){
     this.qrScanner.hide(); // hide camera preview
     this.scanSub.unsubscribe(); // stop scanning
     this.hideCamera();
   }
-
   showCamera() {
     (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
   }
@@ -86,5 +121,4 @@ export class HomePage {
   hideCamera() {
     (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
   }
-
 }
