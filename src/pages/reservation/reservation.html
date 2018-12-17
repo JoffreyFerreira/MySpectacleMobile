@@ -1,0 +1,28 @@
+<ion-header>
+	<ion-navbar>
+		<button ion-button menuToggle>
+			<ion-icon name="login"></ion-icon>
+		</button>
+		<ion-title>Réservation de place</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+	<form (ngSubmit)="logForm()">
+		<ion-list>
+
+			<ion-item>
+				<ion-label fixed>Choix spectacle</ion-label>
+				<ion-input type="text" [(ngModel)]="reserv.spectacle" name="spectacle"></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label fixed>Nombre de places</ion-label>
+				<ion-input type="text" [(ngModel)]="reserv.nbrPlace" name="nbrPlace"></ion-input>
+			</ion-item>
+		</ion-list>
+		<button ion-button>Confirmer</button>
+	</form>
+
+</ion-content>

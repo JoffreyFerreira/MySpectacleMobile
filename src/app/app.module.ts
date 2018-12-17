@@ -6,10 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-
-import { Camera } from '@ionic-native/camera';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
-import { AndroidPermissions } from '@ionic-native/android-permissions';
+import {QRScanner} from "@ionic-native/qr-scanner";
 
 @NgModule({
   declarations: [
@@ -25,13 +22,12 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
     MyApp,
     HomePage
   ],
+  /** Add QRScanner in the provider array **/
   providers: [
     StatusBar,
     SplashScreen,
-    Camera,
-    AndroidPermissions,
-    QRScanner,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    QRScanner
   ]
 })
 export class AppModule {}

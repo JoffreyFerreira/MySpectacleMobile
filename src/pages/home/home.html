@@ -1,11 +1,12 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      QR-Code Scanner
+      Ionic Blank
     </ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="scanOnclick()"> <ion-icon name="camera"> </ion-icon></button>
+      <button ion-button (click)="loginOnClick()"> <ion-icon name="contact"> </ion-icon></button>
+      <button ion-button (click)="reservationOnClick()"> <ion-icon name="logo-usd"> </ion-icon></button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
-
-<ion-content padding>
-  <button ion-button (click)="startScanner()" full>Scan</button>
-</ion-content>

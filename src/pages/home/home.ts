@@ -1,66 +1,100 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-
-
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
-import { AndroidPermissions } from '@ionic-native/android-permissions'
+import {ModalController, NavController, ToastController} from 'ionic-angular';
+import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
+import {LoginPage} from '../login/login';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-
-  constructor(public navCtrl: NavController,public androidPermissions: AndroidPermissions, public qrScanner: QRScanner) {
+  private scanSub: any ;
+  constructor(public navCtrl: NavController,
+              private qrScanner: QRScanner,
+              private modalController: ModalController,
+              private toastCtrl: ToastController) {
 
   }
 
-  startScanner(){
-    console.log("Start Scanning");
 
-        // Optionally request the permission early
-    this.qrScanner.prepare()
-    .then((status: QRScannerStatus) => {
-      if (status.authorized) {
-        // camera permission was granted
-        //alert('authorized');
+  // ionViewWillEnter(){
 
-        // start scanning
-        let scanSub = this.qrScanner.scan().subscribe((text: string) => {
-          console.log('Scanned something', text);
-        // alert(text);
-          this.qrScanner.hide(); // hide camera preview
-          scanSub.unsubscribe(); // stop scanning
-          this.navCtrl.pop();
-        });
+  //   this.showCamera();
+  //   // Optionally request the permission early
+  //   this.qrScanner.prepare()
+  //     .then((status: QRScannerStatus) => {
+  //       if (status.authorized) {
+  //         // camera permission was granted
+  //         console.log('Camera Permission Given');
 
-        this.qrScanner.resumePreview();
+  //         // start scanning
+  //          this.scanSub = this.qrScanner.scan().subscribe((text: string) => {
+  //           console.log('Scanned something', text);
+  //          // this.qrScanner.hide(); // hide camera preview
+  //          // scanSub.unsubscribe(); // stop scanning
+  //           this.presentToast(text);
+  //         });
 
-        // show camera preview
-        this.qrScanner.show()
-        .then((data : QRScannerStatus)=> { 
-          console.log('datashowing', data.showing);
-          //alert(data.showing);
-        },err => {
-          //alert(err);
+  //         // show camera preview
+  //         this.qrScanner.show();
 
-        });
+  //         // wait for user to scan something, then the observable callback will be called
 
-        // wait for user to scan something, then the observable callback will be called
+  //       } else if (status.denied) {
+  //         // camera permission was permanently denied
+  //         // you must use QRScanner.openSettings() method to guide the user to the settings page
+  //         // then they can grant the permission from there
+  //         console.log('Camera permission denied');
+  //       } else {
+  //         // permission was denied, but not permanently. You can ask for permission again at a later time.
+  //         console.log('Permission denied for this runtime.');
+  //       }
+  //     })
+  //     .catch((e: any) => console.log('Error is', e));
+  // }
 
-      } else if (status.denied) {
-        alert('denied');
-        // camera permission was permanently denied
-        // you must use QRScanner.openSettings() method to guide the user to the settings page
-        // then they can grant the permission from there
-      } else {
-        // permission was denied, but not permanently. You can ask for permission again at a later time.
-        alert('else');
-      }
-    })
-    .catch((e: any) => {
-      alert('Error is' + e);
-    });
+
+  scanOnclick() {
+    let modal = this.modalController.create('ScanQrPage');
+    modal.present();
   }
+
+  loginOnClick() {
+    let modal = this.modalController.create('LoginPage');
+    modal.present();
+  }
+
+  reservationOnClick() {
+    let modal = this.modalController.create('ReservationPage');
+    modal.present();    
+  }
+
+  // presentToast(text:string) {
+  //   let toast = this.toastCtrl.create({
+  //     message: text,
+  //     duration: 3000,
+  //     position: 'top'
+  //   });
+
+  //   toast.onDidDismiss(() => {
+  //     console.log('Dismissed toast');
+  //   });
+
+  //   toast.present();
+  // }
+
+  // ionViewWillLeave(){
+  //   this.qrScanner.hide(); // hide camera preview
+  //   this.scanSub.unsubscribe(); // stop scanning
+  //   this.hideCamera();
+  // }
+
+  // showCamera() {
+  //   (window.document.querySelector('ion-app') as HTMLElement).classList.add('cameraView');
+  // }
+
+  // hideCamera() {
+  //   (window.document.querySelector('ion-app') as HTMLElement).classList.remove('cameraView');
+  // }
 
 }
