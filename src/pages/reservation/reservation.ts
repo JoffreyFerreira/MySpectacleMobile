@@ -16,7 +16,7 @@ export class ReservationPage {
 	}
 
 	reserv = {spectacle:null, nbrPlace:null};
-	items = ["Spectacle 1", "Spectacle 2"];
+	items = ["Les chevaliers du fiel : Camping-car forever", "Gotaga barriere show : Masterkill"];
 
 	logForm(){
 		console.log(this.reserv);
