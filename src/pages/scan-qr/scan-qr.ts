@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController, ViewController, ModalController} from 'ionic-angular';
 import {QRScanner, QRScannerStatus} from "@ionic-native/qr-scanner";
 import {Subscriber} from "rxjs/Subscriber";
 
@@ -23,6 +23,7 @@ export class ScanQrPage {
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public viewController: ViewController,
+              private modalController: ModalController,
               public qrScanner: QRScanner,
               public toastCtrl: ToastController) {
   }
@@ -39,7 +40,8 @@ export class ScanQrPage {
 
           // start scanning
           this.scanSub = this.qrScanner.scan().subscribe((text: string) => {
-            this.presentToast(text);
+            let modal = this.modalController.create('ExploreQrPage');
+            modal.present();
           });
 
           // show camera preview

@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import {QRScanner} from "@ionic-native/qr-scanner";
+import { JhipsterApiProvider } from '../providers/jhipster-api/jhipster-api';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {QRScanner} from "@ionic-native/qr-scanner";
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    QRScanner
+    QRScanner,
+    JhipsterApiProvider
   ]
 })
 export class AppModule {}
